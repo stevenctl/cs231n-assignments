@@ -53,7 +53,8 @@ class LinearClassifier(object):
       # Hint: Use np.random.choice to generate indices. Sampling with         #
       # replacement is faster than sampling without replacement.              #
       #########################################################################
-      pass
+      X_batch=X[np.random.choice(range(X.shape[0]), batch_size)]
+      y_batch=y[np.random.choice(range(y.shape[0]), batch_size)]
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
@@ -62,18 +63,23 @@ class LinearClassifier(object):
       loss, grad = self.loss(X_batch, y_batch, reg)
       loss_history.append(loss)
 
+
       # perform parameter update
       #########################################################################
       # TODO:                                                                 #
       # Update the weights using the gradient and the learning rate.          #
       #########################################################################
-      pass
+      self.W -= grad * learning_rate
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
 
       if verbose and it % 100 == 0:
         print('iteration %d / %d: loss %f' % (it, num_iters, loss))
+
+      if loss >= 1e20:
+        print('large loss, terminating training')
+        return loss_history
 
     return loss_history
 
